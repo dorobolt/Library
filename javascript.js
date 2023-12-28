@@ -1,11 +1,6 @@
-const myLibrary = [{
-    title: 'The Hobbit',
-    author: 'J.R.R Tolkien',
-    pages: '294',
-    status: 'Already read'
-},]
+const myLibrary = []
 const myTable = document.querySelector('#book');
-const form = document.querySelector('#form');
+const form = document.querySelector('#dialog');
 
 function book(title, author, pages, status) {
     this.title = title;
@@ -24,9 +19,10 @@ function createTable() {
         const newAuthor = document.createElement('td');
         const newPages = document.createElement('td');
         const newStatus = document.createElement('td');
-        const newButton = document.createElement('td')
-        const readButton = document.createElement('button')
-        const deleteButton = document.createElement('button')
+        const newButton = document.createElement('td');
+        newButton.classList.add('button');
+        const readButton = document.createElement('button');
+        const deleteButton = document.createElement('button');
         newTitle.textContent = myBook.title;
         newAuthor.textContent = myBook.author;
         newPages.textContent = myBook.pages;
@@ -77,20 +73,25 @@ function addBookToLibrary() {
     const BookAuthor = document.querySelector('#author').value;
     const bookPages = document.querySelector('#page').value;
     const BookStatus = document.querySelector('input[name="read"]:checked').value;
+    console.log(bookTitle);
     const newBook = new book(bookTitle, BookAuthor, bookPages, BookStatus)
+    console.log(newBook);
     myLibrary.push(newBook);
     console.log(myLibrary);
     createTable();
+    const inputs = document.querySelectorAll('#title, #author, #page');
+    inputs.forEach(input => {
+        input.value = '';
+    });
+    document.querySelector('input[name="read"]:checked').checked = false;
 }
 
 function openDialog() {
-    form.open = true;
-    myTable.hidden = true;
+    form.showModal();
 }
 
 function closeDialog() {
-    form.open = false;
-    myTable.hidden = false;
+    form.close();
 }
 
 const addBook = document.querySelector('#addbook');
@@ -101,13 +102,9 @@ close.addEventListener('click', closeDialog);
 
 const submit = document.querySelector('#submit');
 submit.addEventListener('click', function (event) {
+    event.preventDefault();
     addBookToLibrary();
     closeDialog();
-    const inputs = document.querySelectorAll('#title, #author, #page');
-    inputs.forEach(input => {
-        input.value = '';
-    });
-    document.querySelector('input[name="read"]:checked').checked = false;
 });
 
 createTable();
